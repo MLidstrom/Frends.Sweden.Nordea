@@ -48,6 +48,13 @@ Settings for transmission header. Some settings are not customizable and will be
 | Zero pos 32 | `string` | Allways set to value: 0 | No | |
 | Reserve pos 33 to 80 | `string` | Reserve - Max chars 48 (leave empty if not used). | Yes | |
 
+
+### File header
+Settings for file header. Some settings are not customizable and will be automatically added.
+| Property | Type | Description | Customizable | Example |
+| -------- | -------- | -------- | -------- | -------- |
+| 020 pos 1 to 4 | `string` | Allways set to value: %020 | No | |
+
 ### Returns
 
 A result object with parameters.
