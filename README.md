@@ -38,22 +38,27 @@ Settings for transmission header. Some settings are not customizable and will be
 
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
-| 001 pos 1 to 4 | `string` | Allways set to value: %001 | No | |
-| NodeId pos 5 To 14 | `string` | Node Id - Max chars 10 (leave empty if not used). | Yes | |
-| Password pos 15 to 20 | `string` | Password - Max chars 6 (leave empty if not used). | Yes | |
-| Delivery pos 21 | `string` | Allways set to value: 0 | No | |
-| File type pos 22 to 24 | `string` | File type - Max chars 3 (leave empty if not used). | Yes | |
-| External reference pos 25 to 30 | `string` | External reference - Max chars 6. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes | |
-| Free field pos 31 | `string` | Free field - Max chars 1 (leave empty if not used). | Yes | |
-| Zero pos 32 | `string` | Allways set to value: 0 | No | |
-| Reserve pos 33 to 80 | `string` | Reserve - Max chars 48 (leave empty if not used). | Yes | |
-
+| 001 pos 1 to 4 | `string` | Automatically sets value: %001 | No | |
+| NodeId pos 5 To 14 | `string` | Max chars 10 (leave empty if not used). | Yes | |
+| Password pos 15 to 20 | `string` | Max chars 6 (leave empty if not used). | Yes | |
+| Delivery pos 21 | `string` | Automatically sets value: 0 | No | |
+| File type pos 22 to 24 | `string` | Max chars 3 (leave empty if not used). | Yes | |
+| External reference pos 25 to 30 | `string` | Max chars 6. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes | |
+| Free field pos 31 | `string` | Max chars 1 (leave empty if not used). | Yes | |
+| Zero pos 32 | `string` | Automatically sets value: 0 | No | |
+| Reserve pos 33 to 80 | `string` | Max chars 48 (leave empty if not used). | Yes | |
 
 ### File header
 Settings for file header. Some settings are not customizable and will be automatically added.
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
-| 020 pos 1 to 4 | `string` | Allways set to value: %020 | No | |
+| 020 pos 1 to 4 | `string` | Automatically sets value: %020 | No | |
+| Destination node pos 5 to 14 | `string` | Max chars 10 (leave empty if not used). | Yes | |
+| Source node pos 15 to 24 | `string` | Max chars 10 (leave empty if not used). | Yes | |
+| External reference 1 pos 25 to 31 | `string` | Max chars 7. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes | |
+| Number of items pos 32 to 38 | `string` | Max chars 7 (leave empty if not used). | Yes | |
+| External reference 2 pos 39 to 48 | `string` | Max chars 10 (leave empty if not used). | Yes | |
+| Reserve pos 49 to 80 | `string` | Max chars 32 (leave empty if not used). | Yes | |
 
 ### Returns
 
