@@ -27,14 +27,14 @@ General settings
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Secret key | `string` | Nordea assigned secret key 32 chars long in HEX value. | `1234567890ABCDEF1234567890ABCDEF` |
+| Secret key | `string` | Nordea assigned secret key - 32 chars long in HEX value. | `1234567890ABCDEF1234567890ABCDEF` |
 | Source file path | `string` | Source file path (must be encoded in ISO-8859-1). | `C:\InFolder\FileUsedforHmacCalculation.txt` |
 | Target file path | `string` | Target file path (will be encoded in ISO-8859-1). | `C:\OutFolder\SignedFileWithAddedPosts.txt` |
 | Use temp file dir | bool | A temporary directory where a temp file used for HMAC calculation will be added and deleted after calculation is done. If set to No (default false), then source file dir will be used instead. The temp file will allways be named &lt;source file name&gt;_tmp. | false |
 | Target file path | `string` | Temp directory. Only used if property Use temp file dir is set to true| `C:\InFolder\Temp` |
 
 ### Transmission header
-Settings for transmission header. Some settings are not customizable and will be automatically added.
+Settings for transmission header. Some settings are not customizable and will be automatically added. All values will be right padded if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
@@ -49,7 +49,8 @@ Settings for transmission header. Some settings are not customizable and will be
 | Reserve pos 33 to 80 | `string` | Max chars 48 (leave empty if not used). | Yes | |
 
 ### File header
-Settings for file header. Some settings are not customizable and will be automatically added.
+Settings for file header. Some settings are not customizable and will be automatically added. All values will be right padded if nothing else is described.
+
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
 | 020 pos 1 to 4 | `string` | Automatically sets value: %020 | No | |
@@ -59,6 +60,20 @@ Settings for file header. Some settings are not customizable and will be automat
 | Number of items pos 32 to 38 | `string` | Max chars 7 (leave empty if not used). | Yes | |
 | External reference 2 pos 39 to 48 | `string` | Max chars 10 (leave empty if not used). | Yes | |
 | Reserve pos 49 to 80 | `string` | Max chars 32 (leave empty if not used). | Yes | |
+
+### File trailer
+Settings for file  trailer. Some settings are not customizable and will be automatically added. All values will be right padded if nothing else is described.
+
+| Property | Type | Description | Customizable | Example |
+| -------- | -------- | -------- | -------- | -------- |
+| 002 pos 1 to 4 | `string` | Automatically sets value: %002 | No | |
+| Number of Records pos 5 to 11 | `string` | Max chars 7. Will be right padded with "0" (leave empty if not used). | Yes | |
+| Key verification value hmac pos 12 43 | `string` | Calculated HMAC based on secret key - 32 chars long HEX value | No | |
+| File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value | No | |
+| Reserve pos 76 to 80 | `string` | Max chars 5 (leave empty if not used). | Yes | |
+
+### Transmission trailer
+Settings for transmission trailer. Some settings are not customizable and will be automatically added.
 
 ### Returns
 
