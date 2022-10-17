@@ -68,8 +68,8 @@ Settings for file  trailer. Some settings are not customizable and will be autom
 | -------- | -------- | -------- | -------- | -------- |
 | 002 pos 1 to 4 | `string` | Automatically sets value: %002 | No | |
 | Number of Records pos 5 to 11 | `string` | Max chars 7. Will be right padded with "0" (leave empty if not used). | Yes | |
-| Key verification value hmac pos 12 43 | `string` | Calculated HMAC based on secret key - 32 chars long HEX value | No | |
-| File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value | No | |
+| Key verification value hmac pos 12 43 | `string` | Calculated HMAC based on secret key - 32 chars long HEX value. | No | |
+| File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value. | No | |
 | Reserve pos 76 to 80 | `string` | Max chars 5 (leave empty if not used). | Yes | |
 
 ### Transmission trailer
