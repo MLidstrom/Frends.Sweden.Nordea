@@ -34,7 +34,7 @@ General settings
 | Target file path | `string` | Temp directory. Only used if property Use temp file dir is set to true| `C:\InFolder\Temp` |
 
 ### Transmission header
-Settings for transmission header. Some settings are not customizable and will be automatically added. All values will be right padded if nothing else is described.
+Settings for transmission header. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
@@ -49,7 +49,7 @@ Settings for transmission header. Some settings are not customizable and will be
 | Reserve pos 33 to 80 | `string` | Max chars 48 (leave empty if not used). | Yes | |
 
 ### File header
-Settings for file header. Some settings are not customizable and will be automatically added. All values will be right padded if nothing else is described.
+Settings for file header. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
@@ -62,7 +62,7 @@ Settings for file header. Some settings are not customizable and will be automat
 | Reserve pos 49 to 80 | `string` | Max chars 32 (leave empty if not used). | Yes | |
 
 ### File trailer
-Settings for file  trailer. Some settings are not customizable and will be automatically added. All values will be right padded if nothing else is described.
+Settings for file  trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
