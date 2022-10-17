@@ -1,0 +1,97 @@
+# Frends.Sweden.Nordea
+
+frends Community Task for Nordea
+
+[![Actions Status](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Sweden.Nordea) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+
+- [Installing](#installing)
+- [Tasks](#tasks)
+- [Nordea](#Nordea)
+- [Building](#building)
+- [Contributing](#contributing)
+- [Change Log](#change-log)
+
+# Installing
+
+You can install the Task via frends UI Task View or you can find the NuGet package from the following NuGet feed
+https://www.myget.org/F/frends-community/api/v3/index.json and in Gallery view in MyGet https://www.myget.org/feed/frends-community/package/nuget/Frends.Sweden.Nordea
+
+# Tasks
+
+## FileProtectionHmac
+
+### Task Parameters
+
+### General
+General settings
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Secret key | `string` | Nordea assigned secret key 32 chars long in HEX value. | `1234567890ABCDEF1234567890ABCDEF` |
+| Source file path | `string` | Source file path (must be encoded in ISO-8859-1). | `C:\InFolder\FileUsedforHmacCalculation.txt` |
+| Target file path | `string` | Target file path (will be encoded in ISO-8859-1). | `C:\OutFolder\SignedFileWithAddedPosts.txt` |
+| Use temp file dir | bool | A temporary directory where a temp file used for HMAC calculation will be added and deleted after calculation is done. If set to No (default false), then source file dir will be used instead. The temp file will allways be named &lt;source file name&gt;_tmp. | false |
+| Target file path | `string` | Temp directory. Only used if property Use temp file dir is set to true| `C:\InFolder\Temp` |
+
+### Transmission header
+Settings for transmission header. Some settings are not customizable and will be automatically added.
+
+| Property | Type | Description | Customizable | Example |
+| -------- | -------- | -------- | -------- | -------- |
+| 001 pos 1 to 4 | `string` | Allways set to value: %001 | No | |
+| NodeId pos 5 To 14 | `string` | Node Id - Max chars 10 (leave empty if not used). | Yes | |
+| Password pos 15 to 20 | `string` | Password - Max chars 6 (leave empty if not used). | Yes | |
+| Delivery pos 21 | `string` | Allways set to value: 0 | No | |
+| File type pos 22 to 24 | `string` | File type - Max chars 3 (leave empty if not used). | Yes | |
+| External reference pos 25 to 30 | `string` | External reference - Max chars 6. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes | |
+| Free field pos 31 | `string` | Free field - Max chars 1 (leave empty if not used). | Yes | |
+| Zero pos 32 | `string` | Allways set to value: 0 | No | |
+| Reserve pos 33 to 80 | `string` | Reserve - Max chars 48 (leave empty if not used). | Yes | |
+
+### Returns
+
+A result object with parameters.
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Replication | `string` | Repeated string. | `foo, foo, foo` |
+
+Usage:
+To fetch result use syntax:
+
+`#result.Replication`
+
+# Building
+
+Clone a copy of the repository
+
+`git clone https://github.com/CommunityHiQ/Frends.Sweden.Nordea.git`
+
+Rebuild the project
+
+`dotnet build`
+
+Run tests
+
+`dotnet test`
+
+Create a NuGet package
+
+`dotnet pack --configuration Release`
+
+# Contributing
+When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
+
+1. Fork the repository on GitHub
+2. Clone the project to your own machine
+3. Commit changes to your own branch
+4. Push your work back up to your fork
+5. Submit a Pull request so that we can review your changes
+
+NOTE: Be sure to merge the latest from "upstream" before making a pull request!
+
+# Change Log
+
+| Version | Changes |
+| ------- | ------- |
+| 0.0.1   | Development still going on |
