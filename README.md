@@ -11,7 +11,7 @@ See Nordea specification https://www.nordea.se/Images/39-16211/technical-specifi
 
 - [Installing](#installing)
 - [Tasks](#tasks)
-- [Nordea](#Nordea)
+	- [FileProtectionHmac](#FileProtectionHmac)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
@@ -27,7 +27,7 @@ https://www.myget.org/F/frends-community/api/v3/index.json and in Gallery view i
 
 ### Task Parameters
 
-### General
+#### General
 General settings
 
 | Property | Type | Description | Example |
@@ -38,7 +38,7 @@ General settings
 | Use temp file dir | bool | A temporary directory where a temp file used for HMAC calculation will be added and deleted after calculation is done. If set to No (default false), then source file dir will be used instead. The temp file will allways be named &lt;source file name&gt;_tmp. | false |
 | Target file path | `string` | Temp directory. Only used if property Use temp file dir is set to true| `C:\InFolder\Temp` |
 
-### Transmission header
+#### Transmission header
 Settings for transmission header. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
@@ -53,7 +53,7 @@ Settings for transmission header. Some settings are not customizable and will be
 | Zero pos 32 | `string` | Automatically sets value: 0 | No | |
 | Reserve pos 33 to 80 | `string` | Max chars 48 (leave empty if not used). | Yes | |
 
-### File header
+#### File header
 Settings for file header. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
@@ -66,7 +66,7 @@ Settings for file header. Some settings are not customizable and will be automat
 | External reference 2 pos 39 to 48 | `string` | Max chars 10 (leave empty if not used). | Yes | |
 | Reserve pos 49 to 80 | `string` | Max chars 32 (leave empty if not used). | Yes | |
 
-### File trailer
+#### File trailer
 Settings for file  trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
@@ -77,7 +77,7 @@ Settings for file  trailer. Some settings are not customizable and will be autom
 | File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value. | No | |
 | Reserve pos 76 to 80 | `string` | Max chars 5 (leave empty if not used). | Yes | |
 
-### Transmission trailer
+#### Transmission trailer
 Settings for transmission trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
 | Property | Type | Description | Customizable | Example |
