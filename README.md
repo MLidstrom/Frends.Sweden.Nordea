@@ -2,14 +2,14 @@
 
 frends Community Task for Nordea
 
-[![Actions Status](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Sweden.Nordea) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+<!-- [![Actions Status](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Sweden.Nordea) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 - [Installing](#installing)
 - [Tasks](#tasks)
 - [Nordea](#Nordea)
 - [Building](#building)
 - [Contributing](#contributing)
-- [Change Log](#change-log)
+- [Change Log](#change-log) -->
 
 # Installing
 
