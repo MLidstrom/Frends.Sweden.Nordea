@@ -15,6 +15,7 @@ namespace Frends.Sweden.Nordea
         /// <summary>
         /// Nordea assigned secret key in 32 char hex
         /// </summary>
+        [PasswordPropertyText]
         [DisplayFormat(DataFormatString = "Text")]
         [DefaultValue("1234567890ABCDEF1234567890ABCDEF")]
         public string SecretKey { get; set; }
@@ -62,6 +63,7 @@ namespace Frends.Sweden.Nordea
         /// <summary>
         /// Password - Max chars 6 (leave empty if not used).
         /// </summary>
+        [PasswordPropertyText]
         [DisplayFormat(DataFormatString = "Text")]
         public string Password_Pos_15_To_20 { get; set; }
 
