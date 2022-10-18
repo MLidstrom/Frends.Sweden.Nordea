@@ -2,14 +2,7 @@
 
 frends Community Task for Nordea
 
-<!-- [![Actions Status](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Sweden.Nordea/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Sweden.Nordea) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-- [Installing](#installing)
-- [Tasks](#tasks)
-- [Nordea](#Nordea)
-- [Building](#building)
-- [Contributing](#contributing)
-- [Change Log](#change-log) -->
 
 # Installing
 
@@ -86,8 +79,7 @@ A result object with parameters.
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Result | `string` | JObject as a string containing generated transmission and file posts as info. | `"{\r\n  \"inputFilePath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\testfall3.txt\",\r\n  \"outputFilePath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\output\\\\generated.txt\"..` |
-
+| Result | `string` | JObject as a string containing generated transmission and file posts as info. | `"{\r\n  \"inputFilePath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\testfall3.txt\",\r\n  \"outputFilePath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\output\\\\generated.txt\",\r\n  \"tempDirPath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\temp\\\\\",\r\n  \"transmissionHeader\": {\r\n    \"001Pos1To4\": \"%001\",\r\n    \"nodeIdPos5To14\": \"AAAAAAAAAA\",\r\n    \"passwordPos15To20\": \"BBBBBB\",\r\n    \"deliveryPos21\": \"0\",\r\n    \"fileTypePos22To24\": \"CCC\",\r\n    \"externalReferencePos25To30\": \"DDDDDD\",\r\n    \"freeFieldPos31\": \"E\",\r\n    \"zeroPos32\": \"0\",\r\n    \"reservePos33To80\": \"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\",\r\n    \"transmissionHeaderLine\": \"%001AAAAAAAAAABBBBBB0CCCDDDDDDE0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\"\r\n  },\r\n  \"fileHeader\": {\r\n    \"020Pos1To4\": \"%020\",\r\n    \"destinationNodePos5To14\": \"AAAAAAAAAA\",\r\n    \"sourceNodePos15To24\": \"BBBBBBBBBB\",\r\n    \"externalReference1Pos25To31\": \"CCCCCCC\",\r\n    \"numberOfItemsPos32To38\": \"DDDDDDD\",\r\n    \"externalReference2Pos39To48\": \"EEEEEEEEEE\",\r\n    \"reservePos49To80\": \"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\",\r\n    \"fileHeaderLine\": \"%020AAAAAAAAAABBBBBBBBBBCCCCCCCDDDDDDDEEEEEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\"\r\n  },\r\n  \"fileTrailer\": {\r\n    \"002Pos1To4\": \"%022\",\r\n    \"numberOfRecords_Pos_5_To_11\": \"AAAAAAA\",\r\n    \"keyVerificationValueHmac_Pos_12_43\": \"FF365893D899291C3BF505FB3175E880\",\r\n    \"fileContentHmac_Pos_44_75\": \"EA4CCEBD107F8A95055CE1104BAD04D4\",\r\n    \"reservePos76To80\": \"BBBBB\",\r\n    \"fileTrailerLine\": \"%022AAAAAAAFF365893D899291C3BF505FB3175E880EA4CCEBD107F8A95055CE1104BAD04D4BBBBB\"\r\n  },\r\n  \"transmissionTrailer\": {\r\n    \"002Pos1To4\": \"%002\",\r\n    \"reservePos5To80\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\r\n    \"transmissionTrailerLine\": \"%002AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\r\n  }\r\n}"` |
 
 **Result example converted from json string to json:**
 ```json
