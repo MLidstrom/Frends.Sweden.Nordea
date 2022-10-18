@@ -90,6 +90,8 @@ A result object with parameters.
 
 ### Example
 
+**Result converted from json string to json:**
+```json
 {
 	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfall3.txt",
 	"outputFilePath": "C:\\Lab\\file\\HMAC\\output\\generated.txt",
@@ -130,6 +132,7 @@ A result object with parameters.
 		"transmissionTrailerLine": "%002AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 	}
 }
+```
 
 Usage:
 To fetch result use syntax:
