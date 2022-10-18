@@ -86,11 +86,10 @@ A result object with parameters.
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Result | `string` | JObject as a string containing generated transmission/file posts as info. | `1234567890ABCDEF1234567890ABCDEF` |
+| Result | `string` | JObject as a string containing generated transmission and file posts as info. | `"{\r\n  \"inputFilePath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\testfall3.txt\",\r\n  \"outputFilePath\": \"C:\\\\Lab\\\\file\\\\HMAC\\\\output\\\\generated.txt\"..` |
 
-### Example
 
-**Result converted from json string to json:**
+**Result example converted from json string to json:**
 ```json
 {
 	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfall3.txt",
