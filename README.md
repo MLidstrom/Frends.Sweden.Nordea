@@ -11,7 +11,9 @@ See Nordea specification https://www.nordea.se/Images/39-16211/technical-specifi
 
 - [Installing](#installing)
 - [Tasks](#tasks)
-	- [FileProtectionHmac](#FileProtectionHmac)
+	- [FileProtectionHmac](#fileProtectionHmac)
+		- [Task Parameters](#task Parameters)
+			- [General](#general)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
