@@ -66,14 +66,19 @@ Settings for file  trailer. Some settings are not customizable and will be autom
 
 | Property | Type | Description | Customizable | Example |
 | -------- | -------- | -------- | -------- | -------- |
-| 002 pos 1 to 4 | `string` | Automatically sets value: %002 | No | |
+| 022 pos 1 to 4 | `string` | Automatically sets value: %022 | No | |
 | Number of Records pos 5 to 11 | `string` | Max chars 7. Will be right padded with "0" (leave empty if not used). | Yes | |
 | Key verification value hmac pos 12 43 | `string` | Calculated HMAC based on secret key - 32 chars long HEX value. | No | |
 | File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value. | No | |
 | Reserve pos 76 to 80 | `string` | Max chars 5 (leave empty if not used). | Yes | |
 
 ### Transmission trailer
-Settings for transmission trailer. Some settings are not customizable and will be automatically added.
+Settings for transmission trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
+
+| Property | Type | Description | Customizable | Example |
+| -------- | -------- | -------- | -------- | -------- |
+| 002 pos 1 to 4" | `string` | Automatically sets value: %002 | No | |
+| Reserve pos 5 to 80 | `string` | Max chars 76 (leave empty if not used). | Yes | |
 
 ### Returns
 
@@ -81,7 +86,50 @@ A result object with parameters.
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Replication | `string` | Repeated string. | `foo, foo, foo` |
+| Result | `string` | JObject as a string containing generated transmission/file posts as info. | `1234567890ABCDEF1234567890ABCDEF` |
+
+### Example
+
+{
+	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfall3.txt",
+	"outputFilePath": "C:\\Lab\\file\\HMAC\\output\\generated.txt",
+	"tempDirPath": "C:\\Lab\\file\\HMAC\\temp\\",
+	"transmissionHeader": {
+		"001Pos1To4": "%001",
+		"nodeIdPos5To14": "AAAAAAAAAA",
+		"passwordPos15To20": "BBBBBB",
+		"deliveryPos21": "0",
+		"fileTypePos22To24": "CCC",
+		"externalReferencePos25To30": "DDDDDD",
+		"freeFieldPos31": "E",
+		"zeroPos32": "0",
+		"reservePos33To80": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+		"transmissionHeaderLine": "%001AAAAAAAAAABBBBBB0CCCDDDDDDE0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+	},
+	"fileHeader": {
+		"020Pos1To4": "%020",
+		"destinationNodePos5To14": "AAAAAAAAAA",
+		"sourceNodePos15To24": "BBBBBBBBBB",
+		"externalReference1Pos25To31": "CCCCCCC",
+		"numberOfItemsPos32To38": "DDDDDDD",
+		"externalReference2Pos39To48": "EEEEEEEEEE",
+		"reservePos49To80": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+		"fileHeaderLine": "%020AAAAAAAAAABBBBBBBBBBCCCCCCCDDDDDDDEEEEEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+	},
+	"fileTrailer": {
+		"002Pos1To4": "%022",
+		"numberOfRecords_Pos_5_To_11": "AAAAAAA",
+		"keyVerificationValueHmac_Pos_12_43": "FF365893D899291C3BF505FB3175E880",
+		"fileContentHmac_Pos_44_75": "EA4CCEBD107F8A95055CE1104BAD04D4",
+		"reservePos76To80": "BBBBB",
+		"fileTrailerLine": "%022AAAAAAAFF365893D899291C3BF505FB3175E880EA4CCEBD107F8A95055CE1104BAD04D4BBBBB"
+	},
+	"transmissionTrailer": {
+		"002Pos1To4": "%002",
+		"reservePos5To80": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+		"transmissionTrailerLine": "%002AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+	}
+}
 
 Usage:
 To fetch result use syntax:
