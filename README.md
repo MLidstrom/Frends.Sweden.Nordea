@@ -15,6 +15,7 @@ See Nordea specification https://www.nordea.se/Images/39-16211/technical-specifi
 		- [Task Parameters](#task-Parameters)
 			- [General](#general)
 			- [Transmission header](#transmission-header)
+			- [File header](#file-header)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
@@ -44,30 +45,30 @@ General settings
 #### Transmission header
 Settings for transmission header. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
-| Property | Type | Description | Customizable | Example |
-| -------- | -------- | -------- | -------- | -------- |
-| 001 pos 1 to 4 | `string` | Automatically sets value: %001 | No | |
-| NodeId pos 5 To 14 | `string` | Max chars 10 (leave empty if not used). | Yes | |
-| Password pos 15 to 20 | `string` | Max chars 6 (leave empty if not used). | Yes | |
-| Delivery pos 21 | `string` | Automatically sets value: 0 | No | |
-| File type pos 22 to 24 | `string` | Max chars 3 (leave empty if not used). | Yes | |
-| External reference pos 25 to 30 | `string` | Max chars 6. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes | |
-| Free field pos 31 | `string` | Max chars 1 (leave empty if not used). | Yes | |
-| Zero pos 32 | `string` | Automatically sets value: 0 | No | |
-| Reserve pos 33 to 80 | `string` | Max chars 48 (leave empty if not used). | Yes | |
+| Property | Type | Description | Customizable |
+| -------- | -------- | -------- | -------- |
+| 001 pos 1 to 4 | `string` | Automatically sets value: %001 | No |
+| NodeId pos 5 To 14 | `string` | Max chars 10 (leave empty if not used). | Yes |
+| Password pos 15 to 20 | `string` | Max chars 6 (leave empty if not used). | Yes |
+| Delivery pos 21 | `string` | Automatically sets value: 0 | No |
+| File type pos 22 to 24 | `string` | Max chars 3 (leave empty if not used). | Yes |
+| External reference pos 25 to 30 | `string` | Max chars 6. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes |
+| Free field pos 31 | `string` | Max chars 1 (leave empty if not used). | Yes |
+| Zero pos 32 | `string` | Automatically sets value: 0 | No |
+| Reserve pos 33 to 80 | `string` | Max chars 48 (leave empty if not used). | Yes |
 
 #### File header
 Settings for file header. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
-| Property | Type | Description | Customizable | Example |
-| -------- | -------- | -------- | -------- | -------- |
-| 020 pos 1 to 4 | `string` | Automatically sets value: %020 | No | |
-| Destination node pos 5 to 14 | `string` | Max chars 10 (leave empty if not used). | Yes | |
-| Source node pos 15 to 24 | `string` | Max chars 10 (leave empty if not used). | Yes | |
-| External reference 1 pos 25 to 31 | `string` | Max chars 7. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes | |
-| Number of items pos 32 to 38 | `string` | Max chars 7 (leave empty if not used). | Yes | |
-| External reference 2 pos 39 to 48 | `string` | Max chars 10 (leave empty if not used). | Yes | |
-| Reserve pos 49 to 80 | `string` | Max chars 32 (leave empty if not used). | Yes | |
+| Property | Type | Description | Customizable |
+| -------- | -------- | -------- | -------- |
+| 020 pos 1 to 4 | `string` | Automatically sets value: %020 | No |
+| Destination node pos 5 to 14 | `string` | Max chars 10 (leave empty if not used). | Yes |
+| Source node pos 15 to 24 | `string` | Max chars 10 (leave empty if not used). | Yes |
+| External reference 1 pos 25 to 31 | `string` | Max chars 7. Dates must be specified as yyMMdd. If left empty, then todays date will be added. | Yes |
+| Number of items pos 32 to 38 | `string` | Max chars 7 (leave empty if not used). | Yes |
+| External reference 2 pos 39 to 48 | `string` | Max chars 10 (leave empty if not used). | Yes |
+| Reserve pos 49 to 80 | `string` | Max chars 32 (leave empty if not used). | Yes |
 
 #### File trailer
 Settings for file  trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
