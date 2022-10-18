@@ -96,10 +96,11 @@ A result object with parameters.
 | Property | Type | Description |
 | -------- | -------- | -------- |
 | Result | `string` | JObject as a string containing generated transmission and file posts as info. |
+
 **Result example converted from json string to json:**
 ```json
 {
-	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfall3.txt",
+	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfile.txt",
 	"outputFilePath": "C:\\Lab\\file\\HMAC\\output\\generated.txt",
 	"tempDirPath": "C:\\Lab\\file\\HMAC\\temp\\",
 	"transmissionHeader": {
