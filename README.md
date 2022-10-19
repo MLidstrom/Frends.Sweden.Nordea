@@ -18,6 +18,8 @@ See Nordea specification https://www.nordea.se/Images/39-16211/technical-specifi
 			- [File header](#file-header)
 			- [File trailer](#file-trailer)
 			- [Transmission trailer](#transmission-trailer)
+			- [Returns](#returns)
+		- [Test](#test)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
@@ -91,7 +93,7 @@ Settings for transmission trailer. Some settings are not customizable and will b
 | 002 pos 1 to 4" | `string` | Automatically sets value: %002 | No | |
 | Reserve pos 5 to 80 | `string` | Max chars 76 (leave empty if not used). | Yes | |
 
-#### Returns
+### Returns
 
 | Property | Type | Description |
 | -------- | -------- | -------- |
@@ -141,10 +143,10 @@ Settings for transmission trailer. Some settings are not customizable and will b
 }
 ```
 
-Usage:
-To fetch result use syntax:
+### Test
+Nordea Sweden have test cases that can be run with this task:
 
-`#result.Replication`
+https://www.nordea.se/foretag/produkter/betala/programleverantorer/filkommunikation.html#tab=HMAC
 
 # Building
 
