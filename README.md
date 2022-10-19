@@ -1,12 +1,10 @@
 # Frends.Sweden.Nordea
 
-Calculates a HMAC value for the secret key and input file content according to Nordeas Sweden requirements. 
+Calculates a HMAC value for the secret key and input file content. It then adds transmission header, file header, file trailer and transmission trailer to
+the output file according to Nordeas Sweden requirements. The file trailer contains the calculated HMAC values for the secret key and for the source file 
+content.
 
-The input file must be encoded in ISO-8859-1 and only contain linefeeds CRLF. A new file is generated with added transmission header %001, transmission 
-trailer %022, file header %020 and file trailer %022. The file trailer %022 contains the calculated HMAC values for the secret key 
-and for the source file content.
-
-See Nordea specification https://www.nordea.se/Images/39-16211/technical-specification-HMAC.pdf for more info.
+See Nordea Sweden specification https://www.nordea.se/Images/39-16211/technical-specification-HMAC.pdf for more info.
 ***
 
 - [Installing](#installing)
