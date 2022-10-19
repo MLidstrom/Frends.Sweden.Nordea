@@ -16,6 +16,8 @@ See Nordea specification https://www.nordea.se/Images/39-16211/technical-specifi
 			- [General](#general)
 			- [Transmission header](#transmission-header)
 			- [File header](#file-header)
+			- [File trailer](#file-trailer)
+			- [Transmission trailer](#transmission-trailer)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
@@ -89,9 +91,7 @@ Settings for transmission trailer. Some settings are not customizable and will b
 | 002 pos 1 to 4" | `string` | Automatically sets value: %002 | No | |
 | Reserve pos 5 to 80 | `string` | Max chars 76 (leave empty if not used). | Yes | |
 
-### Returns
-
-A result object with parameters.
+#### Returns
 
 | Property | Type | Description |
 | -------- | -------- | -------- |
