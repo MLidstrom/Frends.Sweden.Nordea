@@ -4,6 +4,8 @@ Calculates a HMAC value for the secret key and input file content. It then adds 
 the output file according to Nordeas Sweden requirements. The file trailer contains the calculated HMAC values for the secret key and for the source file 
 content.
 
+The input file must be encoded in ISO-8859-1.
+
 See Nordea Sweden specification https://www.nordea.se/Images/39-16211/technical-specification-HMAC.pdf for more info.
 ***
 
