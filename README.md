@@ -27,6 +27,7 @@ sending is to be surrounded by sending items (%001 and %002)."*
 			- [Transmission trailer](#transmission-trailer)
 			- [Returns](#returns)
 		- [Test](#test)
+- [License](#license)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
@@ -150,9 +151,13 @@ Settings for transmission trailer. Some settings are not customizable and will b
 ```
 
 ### Test
-Nordea Sweden have test cases that can be run with this task:
+Nordea Sweden have test cases that can be run with this task. Save them down as files encoded in ISO-8859-1.
 
 https://www.nordea.se/foretag/produkter/betala/programleverantorer/filkommunikation.html#tab=HMAC
+
+# License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 # Building
 
