@@ -49,7 +49,7 @@ General settings
 | Secret key | `string` | Nordea assigned secret key - 32 chars long in HEX value. | `1234567890ABCDEF1234567890ABCDEF` |
 | Source file path | `string` | Source file path (must be encoded in ISO-8859-1). | `C:\InFolder\FileUsedforHmacCalculation.txt` |
 | Target file path | `string` | Target file path (will be encoded in ISO-8859-1). | `C:\OutFolder\SignedFileWithAddedPosts.txt` |
-| Use temp file dir | `bool` | A temporary directory where a temp file used for HMAC calculation will be added and deleted after calculation is done. If set to No (default), then source file dir will be used instead. The temp file will allways be named &lt;source file name&gt;_tmp. | `Yes` |
+| Use temp file dir | `bool` | A temporary directory where a temp file used for HMAC calculation will be added and deleted after calculation is done. If set to No (default), then `Source file path` will be used instead. The temp file will allways be named &lt;source file name&gt;_tmp. | `Yes` |
 | Target file path | `string` | Temp directory. Only used if property Use temp file dir is set to true| `C:\InFolder\Temp` |
 
 #### Transmission header
