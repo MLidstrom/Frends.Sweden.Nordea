@@ -6,6 +6,12 @@ content.
 
 The input file must be encoded in ISO-8859-1.
 
+This task do not support sub-files as following:
+
+Sending format S2 also makes it possible to run several sub-files of the same type in a single 
+sending. Each sub-file is to be surrounded by file items (%020 and %022) and the entire 
+sending is to be surrounded by sending items (%001 and %002). 
+
 See Nordea Sweden specification https://www.nordea.se/Images/39-16211/technical-specification-HMAC.pdf for more info.
 ***
 

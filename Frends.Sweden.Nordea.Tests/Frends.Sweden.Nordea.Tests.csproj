@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestFiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="TestFiles\testfile.txt">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	</None>
