@@ -102,43 +102,43 @@ Settings for transmission trailer. Some settings are not customizable and will b
 **Result example**
 ```json
 {
-	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfile.txt",
-	"outputFilePath": "C:\\Lab\\file\\HMAC\\output\\generated.txt",
-	"tempDirPath": "C:\\Lab\\file\\HMAC\\temp\\",
-	"transmissionHeader": {
-		"001Pos1To4": "%001",
-		"nodeIdPos5To14": "AAAAAAAAAA",
-		"passwordPos15To20": "BBBBBB",
-		"deliveryPos21": "0",
-		"fileTypePos22To24": "CCC",
-		"externalReferencePos25To30": "DDDDDD",
-		"freeFieldPos31": "E",
-		"zeroPos32": "0",
-		"reservePos33To80": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-		"transmissionHeaderLine": "%001AAAAAAAAAABBBBBB0CCCDDDDDDE0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+	"SourceFilePath": "C:\\Lab\\file\\HMAC\\testfall2d.txt",
+	"TargetFilePath": "C:\\Lab\\file\\HMAC\\output\\generated2.txt",
+	"TempDirPath": "C:\\Lab\\file\\HMAC\\temp\\",
+	"TransmissionHeader": {
+		"_001Pos1To4": "%001",
+		"NodeIdPos5To14": "          ",
+		"PasswordPos15To20": "      ",
+		"DeliveryPos21": "0",
+		"FileTypePos22To24": "   ",
+		"ExternalReferencePos25To30": "221019",
+		"FreeFieldPos31": " ",
+		"ZeroPos32": "0",
+		"ReservePos33To80": "                                                ",
+		"TransmissionHeaderLine": "%001                0   221019 0                                                "
 	},
-	"fileHeader": {
-		"020Pos1To4": "%020",
-		"destinationNodePos5To14": "AAAAAAAAAA",
-		"sourceNodePos15To24": "BBBBBBBBBB",
-		"externalReference1Pos25To31": "CCCCCCC",
-		"numberOfItemsPos32To38": "DDDDDDD",
-		"externalReference2Pos39To48": "EEEEEEEEEE",
-		"reservePos49To80": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-		"fileHeaderLine": "%020AAAAAAAAAABBBBBBBBBBCCCCCCCDDDDDDDEEEEEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+	"FileHeader": {
+		"_020Pos1To4": "%020",
+		"DestinationNodePos5To14": "          ",
+		"SourceNodePos15To24": "          ",
+		"ExternalReference1Pos25To31": "221019 ",
+		"NumberOfItemsPos32To38": "       ",
+		"ExternalReference2Pos39To48": "          ",
+		"ReservePos49To80": "                                ",
+		"FileHeaderLine": "%020                    221019                                                  "
 	},
-	"fileTrailer": {
-		"002Pos1To4": "%022",
-		"numberOfRecords_Pos_5_To_11": "AAAAAAA",
-		"keyVerificationValueHmac_Pos_12_43": "FF365893D899291C3BF505FB3175E880",
-		"fileContentHmac_Pos_44_75": "EA4CCEBD107F8A95055CE1104BAD04D4",
-		"reservePos76To80": "BBBBB",
-		"fileTrailerLine": "%022AAAAAAAFF365893D899291C3BF505FB3175E880EA4CCEBD107F8A95055CE1104BAD04D4BBBBB"
+	"FileTrailer": {
+		"_002Pos1To4": "%022",
+		"NumberOfRecords_Pos_5_To_11": "0000000",
+		"KeyVerificationValueHmac_Pos_12_43": "FF365893D899291C3BF505FB3175E880",
+		"FileContentHmac_Pos_44_75": "41DE294A10A0758C7EE3849EA9B67D71",
+		"ReservePos76To80": "     ",
+		"FileTrailerLine": "%0220000000FF365893D899291C3BF505FB3175E88041DE294A10A0758C7EE3849EA9B67D71     "
 	},
-	"transmissionTrailer": {
-		"002Pos1To4": "%002",
-		"reservePos5To80": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-		"transmissionTrailerLine": "%002AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+	"TransmissionTrailer": {
+		"_002Pos1To4": "%002",
+		"ReservePos5To80": "                                                                            ",
+		"TransmissionTrailerLine": "%002                                                                            "
 	}
 }
 ```
