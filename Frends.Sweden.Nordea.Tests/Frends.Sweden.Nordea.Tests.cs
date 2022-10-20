@@ -1,8 +1,5 @@
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Threading;
 
@@ -18,7 +15,7 @@ namespace Frends.Sweden.Nordea.Tests
         private readonly string _secretKey = "1234567890ABCDEF1234567890ABCDEF";
         private readonly string _testFilePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestFiles");
         private string _tempTestFolder;
-        private JObject _jObject;
+        private Result _result;
         private string[] _lines;
 
         [SetUp]
@@ -63,12 +60,14 @@ namespace Frends.Sweden.Nordea.Tests
                 Reserve_Pos_76_To_80 = "BBBBB"
             };
 
-            var nordeaHmacInputTransmissionTrailer = new NordeaHmacInputTransmissionTrailer { Reserve_Pos_5_To_80 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" };
+            var nordeaHmacInputTransmissionTrailer = new NordeaHmacInputTransmissionTrailer
+            {
+                Reserve_Pos_5_To_80 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            };
 
             var result = Nordea.NordeaSweden.FileProtectionHmac(nordeaHmacInputGeneral, nordeaHmacInputTransmissionHeader, nordeaHmacInputFileHeader, nordeaHmacInputFileTrailer, nordeaHmacInputTransmissionTrailer, new CancellationToken());
 
-            // Get result string as JObject
-            _jObject = JObject.Parse(result);
+            _result = (Result)result;
 
             // Get all lines from generated test file
             _lines = File.ReadAllLines(_tempTestFolder + @"\generated.txt");
@@ -87,8 +86,8 @@ namespace Frends.Sweden.Nordea.Tests
             var t = Array.FindAll(_lines, s => s.StartsWith("%022"));
             var kvv = t[0].Substring(11, 32);
 
-            // KVV HMAC should be same as as result JObject
-            Assert.AreEqual((string)_jObject.SelectToken("fileTrailer.keyVerificationValueHmac_Pos_12_43"), kvv);
+            // KVV HMAC should be same as as result
+            Assert.AreEqual(_result.FileTrailer.KeyVerificationValueHmac_Pos_12_43, kvv);
         }
 
         [Test]
@@ -98,8 +97,8 @@ namespace Frends.Sweden.Nordea.Tests
             var t = Array.FindAll(_lines, s => s.StartsWith("%022"));
             var fc = t[0].Substring(43, 32);
 
-            // File content HMAC should be same as as result JObject
-            Assert.AreEqual((string)_jObject.SelectToken("fileTrailer.fileContentHmac_Pos_44_75"), fc);
+            // File content HMAC should be same as as result output
+            Assert.AreEqual(_result.FileTrailer.FileContentHmac_Pos_44_75, fc);
         }
 
         [Test]
@@ -111,8 +110,8 @@ namespace Frends.Sweden.Nordea.Tests
             // Transmission header line should be 80 chars long
             Assert.AreEqual(80, t[0].Length);
 
-            // Transmission header line should be same as result JObject
-            Assert.AreEqual((string)_jObject.SelectToken("transmissionHeader.transmissionHeaderLine"), t[0]);
+            // Transmission header line should be same as result output
+            Assert.AreEqual(_result.TransmissionHeader.TransmissionHeaderLine, t[0]);
         }
 
         [Test]
@@ -125,7 +124,7 @@ namespace Frends.Sweden.Nordea.Tests
             Assert.AreEqual(80, t[0].Length);
 
             // File header line should be same as result JObject
-            Assert.AreEqual((string)_jObject.SelectToken("fileHeader.fileHeaderLine"), t[0]);
+            Assert.AreEqual(_result.FileHeader.FileHeaderLine, t[0]);
         }
 
         [Test]
@@ -138,7 +137,7 @@ namespace Frends.Sweden.Nordea.Tests
             Assert.AreEqual(80, t[0].Length);
 
             // File trailer line should be same as result JObject
-            Assert.AreEqual((string)_jObject.SelectToken("fileTrailer.fileTrailerLine"), t[0]);
+            Assert.AreEqual(_result.FileTrailer.FileTrailerLine, t[0]);
         }
 
         [Test]
@@ -151,7 +150,7 @@ namespace Frends.Sweden.Nordea.Tests
             Assert.AreEqual(80, t[0].Length);
 
             // Transmission trailer line should be same as result JObject
-            Assert.AreEqual((string)_jObject.SelectToken("transmissionTrailer.transmissionTrailerLine"), t[0]);
+            Assert.AreEqual(_result.TransmissionTrailer.TransmissionTrailerLine, t[0]);
         }
     }
 }

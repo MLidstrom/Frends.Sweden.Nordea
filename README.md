@@ -77,29 +77,29 @@ Settings for file header. Some settings are not customizable and will be automat
 #### File trailer
 Settings for file  trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
-| Property | Type | Description | Customizable | Example |
-| -------- | -------- | -------- | -------- | -------- |
-| 022 pos 1 to 4 | `string` | Automatically sets value: %022 | No | |
-| Number of Records pos 5 to 11 | `string` | Max chars 7. Will be right padded with "0" (leave empty if not used). | Yes | |
-| Key verification value hmac pos 12 43 | `string` | Calculated HMAC based on secret key - 32 chars long HEX value. | No | |
-| File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value. | No | |
+| Property | Type | Description | Customizable |
+| -------- | -------- | -------- | -------- |
+| 022 pos 1 to 4 | `string` | Automatically sets value: %022 | No |
+| Number of Records pos 5 to 11 | `string` | Max chars 7. Will be right padded with "0" (leave empty if not used). | Yes |
+| Key verification value hmac pos 12 43 | `string` | Calculated HMAC based on secret key - 32 chars long HEX value. | No |
+| File content hmac pos 44 to 75 | `string` | Calculated HMAC based on source file content - 32 chars long HEX value. | No |
 | Reserve pos 76 to 80 | `string` | Max chars 5 (leave empty if not used). | Yes | |
 
 #### Transmission trailer
 Settings for transmission trailer. Some settings are not customizable and will be automatically added. All values will be right padded with white space if nothing else is described.
 
-| Property | Type | Description | Customizable | Example |
-| -------- | -------- | -------- | -------- | -------- |
-| 002 pos 1 to 4" | `string` | Automatically sets value: %002 | No | |
-| Reserve pos 5 to 80 | `string` | Max chars 76 (leave empty if not used). | Yes | |
+| Property | Type | Description | Customizable |
+| -------- | -------- | -------- | -------- |
+| 002 pos 1 to 4" | `string` | Automatically sets value: %002 | No |
+| Reserve pos 5 to 80 | `string` | Max chars 76 (leave empty if not used). | Yes |
 
 ### Returns
 
 | Property | Type | Description |
 | -------- | -------- | -------- |
-| Result | `string` | JObject as a string containing generated transmission and file posts as info. |
+| Result | `Object` | Object is returned |
 
-**Result example converted from json string to json:**
+**Result example**
 ```json
 {
 	"inputFilePath": "C:\\Lab\\file\\HMAC\\testfile.txt",

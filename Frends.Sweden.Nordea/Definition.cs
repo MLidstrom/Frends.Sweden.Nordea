@@ -1,7 +1,5 @@
 ﻿#pragma warning disable 1591
 
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -146,12 +144,66 @@ namespace Frends.Sweden.Nordea
         public string Reserve_Pos_76_To_80 { get; set; }
     }
 
-        public class NordeaHmacInputTransmissionTrailer
+    public class NordeaHmacInputTransmissionTrailer
     {
         /// <summary>
         /// Reserve - Max chars 76 (leave empty if not used).
         /// </summary>
         [DisplayFormat(DataFormatString = "Text")]
         public string Reserve_Pos_5_To_80 { get; set; }
+    }
+
+    public class Result
+    {
+        public string SourceFilePath { get; set; }
+        public string TargetFilePath { get; set; }
+        public string TempDirPath { get; set; }
+        public TransmissionHeader TransmissionHeader { get; set; }
+        public FileHeader FileHeader { get; set; }
+        public FileTrailer FileTrailer { get; set; }
+        public TransmissionTrailer TransmissionTrailer { get; set; }
+    }
+
+    public class TransmissionHeader
+    {
+        public string _001Pos1To4 { get; set; }
+        public string NodeIdPos5To14 { get; set; }
+        public string PasswordPos15To20 { get; set; }
+        public string DeliveryPos21 { get; set; }
+        public string FileTypePos22To24 { get; set; }
+        public string ExternalReferencePos25To30 { get; set; }
+        public string FreeFieldPos31 { get; set; }
+        public string ZeroPos32 { get; set; }
+        public string ReservePos33To80 { get; set; }
+        public string TransmissionHeaderLine { get; set; }
+    }
+
+    public class FileHeader
+    {
+        public string _020Pos1To4 { get; set; }
+        public string DestinationNodePos5To14 { get; set; }
+        public string SourceNodePos15To24 { get; set; }
+        public string ExternalReference1Pos25To31 { get; set; }
+        public string NumberOfItemsPos32To38 { get; set; }
+        public string ExternalReference2Pos39To48 { get; set; }
+        public string ReservePos49To80 { get; set; }
+        public string FileHeaderLine { get; set; }
+    }
+
+    public class FileTrailer
+    {
+        public string _002Pos1To4 { get; set; }
+        public string NumberOfRecords_Pos_5_To_11 { get; set; }
+        public string KeyVerificationValueHmac_Pos_12_43 { get; set; }
+        public string FileContentHmac_Pos_44_75 { get; set; }
+        public string ReservePos76To80 { get; set; }
+        public string FileTrailerLine { get; set; }
+    }
+
+    public class TransmissionTrailer
+    {
+        public string _002Pos1To4 { get; set; }
+        public string ReservePos5To80 { get; set; }
+        public string TransmissionTrailerLine { get; set; }
     }
 }

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using Newtonsoft.Json.Linq;
 
 #pragma warning disable 1591
 
@@ -22,13 +21,13 @@ namespace Frends.Sweden.Nordea
         /// a value. 
         /// See Nordea specification https://www.nordea.se/Images/39-16211/technical-specification-HMAC.pdf for more info.
         /// </summary>
-        /// <returns>JObject as a string containing generated transmission/file posts as info</returns>
-        public static string FileProtectionHmac([PropertyTab] NordeaHmacInputGeneral General, [PropertyTab] NordeaHmacInputTransmissionHeader TransmissionHeader, [PropertyTab] NordeaHmacInputFileHeader FileHeader, [PropertyTab] NordeaHmacInputFileTrailer FileTrailer, [PropertyTab] NordeaHmacInputTransmissionTrailer TransmissionTrailer, CancellationToken cancellationToken)
+        /// <returns>Object</returns>
+        public static object FileProtectionHmac([PropertyTab] NordeaHmacInputGeneral General, [PropertyTab] NordeaHmacInputTransmissionHeader InTransmissionHeader, [PropertyTab] NordeaHmacInputFileHeader InFileHeader, [PropertyTab] NordeaHmacInputFileTrailer InFileTrailer, [PropertyTab] NordeaHmacInputTransmissionTrailer InTransmissionTrailer, CancellationToken cancellationToken)
         {
 
             string encoding = "iso-8859-1";
-            var targetFilePath = new FileInfo(General.TargetFilePath);
-            var sourceFilepath = new FileInfo(General.SourceFilePath);
+            FileInfo targetFilePath = new FileInfo(General.TargetFilePath);
+            FileInfo sourceFilepath = new FileInfo(General.SourceFilePath);
 
             // If target file exists, then throw error since we do not want to overwrite it
             if (targetFilePath.Exists)
@@ -49,63 +48,56 @@ namespace Frends.Sweden.Nordea
             string fileContentHmac = GetCalculatedHmac(keyByte, sourceFilepath, tempDirPath, encoding, cancellationToken);
 
             // Create transmission header
-            var tTransmHead = (CreateTransmissionHeader(
-                TransmissionHeader.NodeId_Pos_5_To_14,
-                TransmissionHeader.Password_Pos_15_To_20,
-                TransmissionHeader.FileType_Pos_22_To_24,
-                TransmissionHeader.ExternalReference_Pos_25_To_30,
-                TransmissionHeader.FreeField_Pos_31,
-                TransmissionHeader.Reserve_Pos_33_To_80));
-
-            tTransmHead.jObject.Add("transmissionHeaderLine", new JValue(tTransmHead.sLine));
+            TransmissionHeader tTransmHead = CreateTransmissionHeader(
+                InTransmissionHeader.NodeId_Pos_5_To_14,
+                InTransmissionHeader.Password_Pos_15_To_20,
+                InTransmissionHeader.FileType_Pos_22_To_24,
+                InTransmissionHeader.ExternalReference_Pos_25_To_30,
+                InTransmissionHeader.FreeField_Pos_31,
+                InTransmissionHeader.Reserve_Pos_33_To_80);
 
             // Create file header
-            var tFileHead = CreateFileHeader(
-                FileHeader.DestinationNode_Pos_5_To_14,
-                FileHeader.SourceNode_Pos_15_To_24,
-                FileHeader.ExternalReference_1_Pos_25_To_31,
-                FileHeader.NumberOfItems_Pos_32_To_38,
-                FileHeader.ExternalReference_2_Pos_39_To_48,
-                FileHeader.Reserve_Pos_49_To_80);
-
-            tFileHead.jObject.Add("fileHeaderLine", new JValue(tFileHead.sLine));
+            FileHeader tFileHead = CreateFileHeader(
+                InFileHeader.DestinationNode_Pos_5_To_14,
+                InFileHeader.SourceNode_Pos_15_To_24,
+                InFileHeader.ExternalReference_1_Pos_25_To_31,
+                InFileHeader.NumberOfItems_Pos_32_To_38,
+                InFileHeader.ExternalReference_2_Pos_39_To_48,
+                InFileHeader.Reserve_Pos_49_To_80);
 
             // Create file trailer
-            var tFileTrail = CreateFileTrailer(FileTrailer.NumberOfRecords_Pos_5_To_11,
-                kvvHmac, 
+            FileTrailer tFileTrail = CreateFileTrailer(
+                InFileTrailer.NumberOfRecords_Pos_5_To_11,
+                kvvHmac,
                 fileContentHmac,
-                FileTrailer.Reserve_Pos_76_To_80);
-            
-            tFileTrail.jObject.Add("fileTrailerLine", new JValue(tFileTrail.sLine));
+                InFileTrailer.Reserve_Pos_76_To_80);
 
             // Create transmission trailer
-            var tTransmTrail = CreateTransmissionTrailer(TransmissionTrailer.Reserve_Pos_5_To_80);
-            
-            tTransmTrail.jObject.Add("transmissionTrailerLine", new JValue(tTransmTrail.sLine));
+            TransmissionTrailer tTransmTrail = CreateTransmissionTrailer(InTransmissionTrailer.Reserve_Pos_5_To_80);
 
             // Write out file with transmission and file posts
-            WriteOutFile(General.SourceFilePath, 
-                General.TargetFilePath, 
-                tTransmHead.sLine, 
-                tFileHead.sLine, 
-                tFileTrail.sLine, 
-                tTransmTrail.sLine, 
-                encoding, 
+            WriteOutFile(General.SourceFilePath,
+                General.TargetFilePath,
+                tTransmHead.TransmissionHeaderLine,
+                tFileHead.FileHeaderLine,
+                tFileTrail.FileTrailerLine,
+                tTransmTrail.TransmissionTrailerLine,
+                encoding,
                 cancellationToken);
 
-            // Create JSON output with info
-            JObject rootObj = new JObject
+            // Create result output
+            Result root = new Result
             {
-                { "inputFilePath", new JValue(General.SourceFilePath) },
-                { "outputFilePath", new JValue(General.TargetFilePath) },
-                { "tempDirPath", new JValue(tempDirPath) },
-                new JProperty("transmissionHeader", tTransmHead.jObject),
-                new JProperty("fileHeader", tFileHead.jObject),
-                new JProperty("fileTrailer", tFileTrail.jObject),
-                new JProperty("transmissionTrailer", tTransmTrail.jObject)       
+                SourceFilePath = General.SourceFilePath,
+                TargetFilePath = General.TargetFilePath,
+                TempDirPath = General.TempDirPath,
+                TransmissionHeader = tTransmHead,
+                FileHeader = tFileHead,
+                FileTrailer = tFileTrail,
+                TransmissionTrailer = tTransmTrail
             };
 
-            return rootObj.ToString();
+            return root;
         }
 
         private static string GetKeyVerificationValueHmac(byte[] keyByte, CancellationToken cancellationToken)
@@ -113,14 +105,14 @@ namespace Frends.Sweden.Nordea
             // Calculate HMAC for Key Verification Value (KVV)
             byte[] ba = Encoding.UTF8.GetBytes("00000000");
             string msgHexKey = BitConverter.ToString(ba).Replace("-", "");
-            
+
             return GetSealMAC(keyByte, msgHexKey, cancellationToken);
         }
 
         private static string GetTempDir(bool useTempFileDir, string tempDirPath, FileInfo sourceFilePath)
         {
             if (useTempFileDir)
-            {   
+            {
                 // Create temp directory if not exists
                 if (!Directory.Exists(tempDirPath))
                 {
@@ -135,20 +127,20 @@ namespace Frends.Sweden.Nordea
             }
         }
 
-            private static string GetCalculatedHmac(byte[] keyByte, FileInfo inFilePath, string tempDirPath, string encoding, CancellationToken cancellationToken)
+        private static string GetCalculatedHmac(byte[] keyByte, FileInfo inFilePath, string tempDirPath, string encoding, CancellationToken cancellationToken)
         {
             // Get dictionary used as lookup to get correct hex value for HMAC calculation based on Nordea requirement 
             Dictionary<string, string> d = GetConvertionDictionary();
 
             // Create a temp file with everything converted to hex without line feeds
             string tmpFile = Path.Combine(tempDirPath, inFilePath.Name + "_tmp");
-            var tmpOutput = new StreamWriter(tmpFile);
+            StreamWriter tmpOutput = new StreamWriter(tmpFile);
 
             foreach (string line in File.ReadLines(inFilePath.FullName, Encoding.GetEncoding(encoding)))
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 string lineHex = "";
-                
+
                 foreach (char c in line)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -169,94 +161,76 @@ namespace Frends.Sweden.Nordea
             return GetSealMAC(keyByte, msgHexFileContent, cancellationToken);
         }
 
-        private static (JObject jObject, string sLine) CreateTransmissionHeader(string nodeId_Pos_5_To_14, string password_Pos_15_To_20, string fileType_Pos_22_To_24, string externalReference_Pos_25_To_30, string freeField_Pos_31, string reserve_Pos_33_To_80)
+        private static TransmissionHeader CreateTransmissionHeader(string nodeId_Pos_5_To_14, string password_Pos_15_To_20, string fileType_Pos_22_To_24, string externalReference_Pos_25_To_30, string freeField_Pos_31, string reserve_Pos_33_To_80)
         {
             externalReference_Pos_25_To_30 = String.IsNullOrEmpty(externalReference_Pos_25_To_30) ? DateTime.Now.ToString("yyMMdd") : externalReference_Pos_25_To_30;
 
-            JObject jObject = new JObject
+            TransmissionHeader th = new TransmissionHeader
             {
-                { "001Pos1To4", new JValue("%001") },
-                { "nodeIdPos5To14", new JValue(ValidateCharLengthAndPad(nodeId_Pos_5_To_14, "Node id pos 5 to 14", 10)) },
-                { "passwordPos15To20", new JValue(ValidateCharLengthAndPad(password_Pos_15_To_20, "Password pos 15 to 20", 6)) },
-                { "deliveryPos21", new JValue("0") },
-                { "fileTypePos22To24", new JValue(ValidateCharLengthAndPad(fileType_Pos_22_To_24, "File type pos 22 to 24", 3)) },
-                { "externalReferencePos25To30", new JValue(ValidateCharLengthAndPad(externalReference_Pos_25_To_30, "External reference pos 25 to 30", 6)) },
-                { "freeFieldPos31", new JValue(ValidateCharLengthAndPad(freeField_Pos_31, "Free field pos 31", 1)) },
-                { "zeroPos32", new JValue("0") },
-                { "reservePos33To80", new JValue(ValidateCharLengthAndPad(reserve_Pos_33_To_80, "Reserve pos 33 to 80", 48)) }
+                _001Pos1To4 = "%001",
+                NodeIdPos5To14 = ValidateCharLengthAndPad(nodeId_Pos_5_To_14, "Node id pos 5 to 14", 10),
+                PasswordPos15To20 = ValidateCharLengthAndPad(password_Pos_15_To_20, "Password pos 15 to 20", 6),
+                DeliveryPos21 = "0",
+                FileTypePos22To24 = ValidateCharLengthAndPad(fileType_Pos_22_To_24, "File type pos 22 to 24", 3),
+                ExternalReferencePos25To30 = ValidateCharLengthAndPad(externalReference_Pos_25_To_30, "External reference pos 25 to 30", 6),
+                FreeFieldPos31 = ValidateCharLengthAndPad(freeField_Pos_31, "Free field pos 31", 1),
+                ZeroPos32 = "0",
+                ReservePos33To80 = ValidateCharLengthAndPad(reserve_Pos_33_To_80, "Reserve pos 33 to 80", 48)
             };
 
-            string sLine = jObject["001Pos1To4"].ToString()
-                + jObject["nodeIdPos5To14"].ToString()
-                + jObject["passwordPos15To20"].ToString()
-                + jObject["deliveryPos21"].ToString()
-                + jObject["fileTypePos22To24"].ToString()
-                + jObject["externalReferencePos25To30"].ToString()
-                + jObject["freeFieldPos31"].ToString()
-                + jObject["zeroPos32"].ToString()
-                + jObject["reservePos33To80"].ToString();
+            th.TransmissionHeaderLine = th._001Pos1To4 + th.NodeIdPos5To14 + th.PasswordPos15To20 + th.DeliveryPos21 + th.FileTypePos22To24 + th.ExternalReferencePos25To30 + th.FreeFieldPos31 + th.ZeroPos32 + th.ReservePos33To80;
 
-            return (jObject, sLine);
+            return (th);
         }
 
-        private static (JObject jObject, string sLine) CreateFileHeader(string destinationNode_Pos_5_To_14, string sourceNode_Pos_15_To_24, string externalReference_1_Pos_25_To_31, string numberOfItems_Pos_32_To_38, string externalReference_2_Pos_39_To_48, string reserve_Pos_49_To_80)
+        private static FileHeader CreateFileHeader(string destinationNode_Pos_5_To_14, string sourceNode_Pos_15_To_24, string externalReference_1_Pos_25_To_31, string numberOfItems_Pos_32_To_38, string externalReference_2_Pos_39_To_48, string reserve_Pos_49_To_80)
         {
             externalReference_1_Pos_25_To_31 = String.IsNullOrEmpty(externalReference_1_Pos_25_To_31) ? DateTime.Now.ToString("yyMMdd") : externalReference_1_Pos_25_To_31;
 
-            JObject jObject = new JObject
+            FileHeader fh = new FileHeader
             {
-                { "020Pos1To4", new JValue("%020") },
-                { "destinationNodePos5To14", new JValue(ValidateCharLengthAndPad(destinationNode_Pos_5_To_14, "Destination node pos 5 to 14", 10)) },
-                { "sourceNodePos15To24", new JValue(ValidateCharLengthAndPad(sourceNode_Pos_15_To_24, "Source node pos 15 to 24", 10)) },
-                { "externalReference1Pos25To31", new JValue(ValidateCharLengthAndPad(externalReference_1_Pos_25_To_31, "External reference 1 pos 25 to 31", 7)) },
-                { "numberOfItemsPos32To38", new JValue(ValidateCharLengthAndPad(numberOfItems_Pos_32_To_38, "Number of items pos 32 to 38", 7)) },
-                { "externalReference2Pos39To48", new JValue(ValidateCharLengthAndPad(externalReference_2_Pos_39_To_48, "External reference 2 pos 39 to 48", 10)) },
-                { "reservePos49To80", new JValue(ValidateCharLengthAndPad(reserve_Pos_49_To_80, "Reserve pos 49 to 80", 32)) }
+                _020Pos1To4 = "%020",
+                DestinationNodePos5To14 = ValidateCharLengthAndPad(sourceNode_Pos_15_To_24, "Source node pos 15 to 24", 10),
+                SourceNodePos15To24 = ValidateCharLengthAndPad(sourceNode_Pos_15_To_24, "Source node pos 15 to 24", 10),
+                ExternalReference1Pos25To31 = ValidateCharLengthAndPad(externalReference_1_Pos_25_To_31, "External reference 1 pos 25 to 31", 7),
+                NumberOfItemsPos32To38 = ValidateCharLengthAndPad(numberOfItems_Pos_32_To_38, "Number of items pos 32 to 38", 7),
+                ExternalReference2Pos39To48 = ValidateCharLengthAndPad(externalReference_2_Pos_39_To_48, "External reference 2 pos 39 to 48", 10),
+                ReservePos49To80 = ValidateCharLengthAndPad(reserve_Pos_49_To_80, "Reserve pos 49 to 80", 32)
+
             };
 
-            string sLine = jObject["020Pos1To4"].ToString()
-                + jObject["destinationNodePos5To14"].ToString()
-                + jObject["sourceNodePos15To24"].ToString()
-                + jObject["externalReference1Pos25To31"].ToString()
-                + jObject["numberOfItemsPos32To38"].ToString()
-                + jObject["externalReference2Pos39To48"].ToString()
-                + jObject["reservePos49To80"].ToString();
+            fh.FileHeaderLine = fh._020Pos1To4 + fh.DestinationNodePos5To14 + fh.SourceNodePos15To24 + fh.ExternalReference1Pos25To31 + fh.NumberOfItemsPos32To38 + fh.ExternalReference2Pos39To48 + fh.ReservePos49To80;
 
-            return (jObject, sLine);
+            return (fh);
         }
 
-        private static (JObject jObject, string sLine) CreateFileTrailer(string numberOfRecords_Pos_5_To_11, string kvvHmac, string fileContentHmac, string reserve_Pos_76_To_80)
+        private static FileTrailer CreateFileTrailer(string numberOfRecords_Pos_5_To_11, string kvvHmac, string fileContentHmac, string reserve_Pos_76_To_80)
         {
-            JObject jObject = new JObject
+            FileTrailer ft = new FileTrailer
             {
-                { "002Pos1To4", new JValue("%022") },
-                { "numberOfRecords_Pos_5_To_11", new JValue(ValidateCharLengthAndPad(numberOfRecords_Pos_5_To_11, "Number of Records pos 5 to 11", 7, "zero")) },
-                { "keyVerificationValueHmac_Pos_12_43", new JValue(kvvHmac) },
-                { "fileContentHmac_Pos_44_75", new JValue(fileContentHmac) },
-                { "reservePos76To80", new JValue(ValidateCharLengthAndPad(reserve_Pos_76_To_80, "Reserve pos 76 to 80", 5)) }
+                _002Pos1To4 = "%022",
+                NumberOfRecords_Pos_5_To_11 = ValidateCharLengthAndPad(numberOfRecords_Pos_5_To_11, "Number of Records pos 5 to 11", 7, "zero"),
+                KeyVerificationValueHmac_Pos_12_43 = kvvHmac,
+                FileContentHmac_Pos_44_75 = fileContentHmac,
+                ReservePos76To80 = ValidateCharLengthAndPad(reserve_Pos_76_To_80, "Reserve pos 76 to 80", 5)
             };
 
-            string sLine = jObject["002Pos1To4"].ToString()
-                + jObject["numberOfRecords_Pos_5_To_11"].ToString()
-                + jObject["keyVerificationValueHmac_Pos_12_43"].ToString()
-                + jObject["fileContentHmac_Pos_44_75"].ToString()
-                + jObject["reservePos76To80"].ToString();
+            ft.FileTrailerLine = ft._002Pos1To4 + ft.NumberOfRecords_Pos_5_To_11 + ft.KeyVerificationValueHmac_Pos_12_43 + ft.FileContentHmac_Pos_44_75 + ft.ReservePos76To80;
 
-            return (jObject, sLine);
+            return ft;
         }
 
-        private static (JObject jObject, string sLine) CreateTransmissionTrailer(string reserve_Pos_5_To_80)
+        private static TransmissionTrailer CreateTransmissionTrailer(string reserve_Pos_5_To_80)
         {
-            JObject jObject = new JObject
+            TransmissionTrailer tt = new TransmissionTrailer
             {
-                { "002Pos1To4", new JValue("%002") },
-                { "reservePos5To80", new JValue(ValidateCharLengthAndPad(reserve_Pos_5_To_80, "Reserve pos 5 to 80", 76)) }
+                _002Pos1To4 = "%002",
+                ReservePos5To80 = ValidateCharLengthAndPad(reserve_Pos_5_To_80, "Reserve pos 5 to 80", 76)
             };
 
-            string sLine = jObject["002Pos1To4"].ToString()
-                + jObject["reservePos5To80"].ToString();
+            tt.TransmissionTrailerLine = tt._002Pos1To4 + tt.ReservePos5To80;
 
-            return (jObject, sLine);
+            return tt;
         }
 
         private static void WriteOutFile(string inFilePath, string outFilePath, string transmHead, string fileHeader, string fileTrail, string transmTrail, string encoding, CancellationToken cancellationToken)
@@ -318,9 +292,9 @@ namespace Frends.Sweden.Nordea
 
         private static byte[] HexStringToByteArray(string hex, CancellationToken cancellationToken)
         {
-            int NumberChars = hex.Length;
-            byte[] bytes = new byte[NumberChars / 2];
-            for (int i = 0; i < NumberChars; i += 2)
+            int numberChars = hex.Length;
+            byte[] bytes = new byte[numberChars / 2];
+            for (int i = 0; i < numberChars; i += 2)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
@@ -330,7 +304,7 @@ namespace Frends.Sweden.Nordea
 
         private static string GetSealMAC(byte[] keyByte, string msgHex, CancellationToken cancellationToken)
         {
-            var byteArray = HexStringToByteArray(msgHex, cancellationToken);
+            byte[] byteArray = HexStringToByteArray(msgHex, cancellationToken);
 
             HMACSHA256 hmacsha256 = new HMACSHA256(keyByte);
             byte[] messageHash = hmacsha256.ComputeHash(byteArray);
@@ -342,113 +316,114 @@ namespace Frends.Sweden.Nordea
 
         private static Dictionary<string, string> GetConvertionDictionary()
         {
-            Dictionary<string, string> d = new Dictionary<string, string>();
-
-            d.Add(" ", "20");
-            d.Add("!", "21");
-            d.Add("\"", "22");
-            d.Add("#", "23");
-            d.Add("$", "24");
-            d.Add("%", "25");
-            d.Add("&", "26");
-            d.Add("'", "27");
-            d.Add("(", "28");
-            d.Add(")", "29");
-            d.Add("*", "2A");
-            d.Add("+", "2B");
-            d.Add(",", "2C");
-            d.Add("-", "2D");
-            d.Add(".", "2E");
-            d.Add("/", "2F");
-            d.Add("0", "30");
-            d.Add("1", "31");
-            d.Add("2", "32");
-            d.Add("3", "33");
-            d.Add("4", "34");
-            d.Add("5", "35");
-            d.Add("6", "36");
-            d.Add("7", "37");
-            d.Add("8", "38");
-            d.Add("9", "39");
-            d.Add(":", "3A");
-            d.Add(";", "3B");
-            d.Add("<", "3C");
-            d.Add("=", "3D");
-            d.Add(">", "3E");
-            d.Add("?", "3F");
-            d.Add("@", "40");
-            d.Add("É", "40");      
-            d.Add("A", "41");
-            d.Add("B", "42");
-            d.Add("C", "43");
-            d.Add("D", "44");
-            d.Add("E", "45");
-            d.Add("F", "46");
-            d.Add("G", "47");
-            d.Add("H", "48");
-            d.Add("I", "49");
-            d.Add("J", "4A");
-            d.Add("K", "4B");
-            d.Add("L", "4C");
-            d.Add("M", "4D");
-            d.Add("N", "4E");
-            d.Add("O", "4F");
-            d.Add("P", "50");
-            d.Add("Q", "51");
-            d.Add("R", "52");
-            d.Add("S", "53");
-            d.Add("T", "54");
-            d.Add("U", "55");
-            d.Add("V", "56");
-            d.Add("W", "57");
-            d.Add("X", "58");
-            d.Add("Y", "59");
-            d.Add("Z", "5A");
-            d.Add("[", "5B"); 
-            d.Add("Ä", "5B"); 
-            d.Add("\\", "5C"); 
-            d.Add("Ö", "5C"); 
-            d.Add("]", "5D"); 
-            d.Add("Å", "5D"); 
-            d.Add("^", "5E"); 
-            d.Add("Ü", "5E"); 
-            d.Add("_", "5F");
-            d.Add("`", "60"); 
-            d.Add("é", "60"); 
-            d.Add("a", "61");
-            d.Add("b", "62");
-            d.Add("c", "63");
-            d.Add("d", "64");
-            d.Add("e", "65");
-            d.Add("f", "66");
-            d.Add("g", "67");
-            d.Add("h", "68");
-            d.Add("i", "69");
-            d.Add("j", "6A");
-            d.Add("k", "6B");
-            d.Add("l", "6C");
-            d.Add("m", "6D");
-            d.Add("n", "6E");
-            d.Add("o", "6F");
-            d.Add("p", "70");
-            d.Add("q", "71");
-            d.Add("r", "72");
-            d.Add("s", "73");
-            d.Add("t", "74");
-            d.Add("u", "75");
-            d.Add("v", "76");
-            d.Add("w", "77");
-            d.Add("x", "78");
-            d.Add("y", "79");
-            d.Add("z", "7A");
-            d.Add("{", "7B"); 
-            d.Add("ä", "7B"); 
-            d.Add("|", "7C"); 
-            d.Add("ö", "7C"); 
-            d.Add("}", "7D"); 
-            d.Add("å", "7D"); 
-            d.Add("~", "7E"); 
-            d.Add("ü", "7E"); 
+            Dictionary<string, string> d = new Dictionary<string, string>
+            {
+                { " ", "20" },
+                { "!", "21" },
+                { "\"", "22" },
+                { "#", "23" },
+                { "$", "24" },
+                { "%", "25" },
+                { "&", "26" },
+                { "'", "27" },
+                { "(", "28" },
+                { ")", "29" },
+                { "*", "2A" },
+                { "+", "2B" },
+                { ",", "2C" },
+                { "-", "2D" },
+                { ".", "2E" },
+                { "/", "2F" },
+                { "0", "30" },
+                { "1", "31" },
+                { "2", "32" },
+                { "3", "33" },
+                { "4", "34" },
+                { "5", "35" },
+                { "6", "36" },
+                { "7", "37" },
+                { "8", "38" },
+                { "9", "39" },
+                { ":", "3A" },
+                { ";", "3B" },
+                { "<", "3C" },
+                { "=", "3D" },
+                { ">", "3E" },
+                { "?", "3F" },
+                { "@", "40" },
+                { "É", "40" },
+                { "A", "41" },
+                { "B", "42" },
+                { "C", "43" },
+                { "D", "44" },
+                { "E", "45" },
+                { "F", "46" },
+                { "G", "47" },
+                { "H", "48" },
+                { "I", "49" },
+                { "J", "4A" },
+                { "K", "4B" },
+                { "L", "4C" },
+                { "M", "4D" },
+                { "N", "4E" },
+                { "O", "4F" },
+                { "P", "50" },
+                { "Q", "51" },
+                { "R", "52" },
+                { "S", "53" },
+                { "T", "54" },
+                { "U", "55" },
+                { "V", "56" },
+                { "W", "57" },
+                { "X", "58" },
+                { "Y", "59" },
+                { "Z", "5A" },
+                { "[", "5B" },
+                { "Ä", "5B" },
+                { "\\", "5C" },
+                { "Ö", "5C" },
+                { "]", "5D" },
+                { "Å", "5D" },
+                { "^", "5E" },
+                { "Ü", "5E" },
+                { "_", "5F" },
+                { "`", "60" },
+                { "é", "60" },
+                { "a", "61" },
+                { "b", "62" },
+                { "c", "63" },
+                { "d", "64" },
+                { "e", "65" },
+                { "f", "66" },
+                { "g", "67" },
+                { "h", "68" },
+                { "i", "69" },
+                { "j", "6A" },
+                { "k", "6B" },
+                { "l", "6C" },
+                { "m", "6D" },
+                { "n", "6E" },
+                { "o", "6F" },
+                { "p", "70" },
+                { "q", "71" },
+                { "r", "72" },
+                { "s", "73" },
+                { "t", "74" },
+                { "u", "75" },
+                { "v", "76" },
+                { "w", "77" },
+                { "x", "78" },
+                { "y", "79" },
+                { "z", "7A" },
+                { "{", "7B" },
+                { "ä", "7B" },
+                { "|", "7C" },
+                { "ö", "7C" },
+                { "}", "7D" },
+                { "å", "7D" },
+                { "~", "7E" },
+                { "ü", "7E" }
+            };
 
             return d;
         }
