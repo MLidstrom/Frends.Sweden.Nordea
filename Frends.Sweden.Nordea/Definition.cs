@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Frends.Sweden.Nordea
 {
     /// <summary>
-    /// Input class for task SplitXmlFileToFileParts
+    /// Input class for task FileProtectionHmac
     /// </summary>
     public class NordeaHmacInputGeneral
     {
