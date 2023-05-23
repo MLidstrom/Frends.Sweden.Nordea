@@ -28,8 +28,6 @@ sending is to be surrounded by sending items (%001 and %002)."*
 			- [Returns](#returns)
 		- [Test](#test)
 - [License](#license)
-- [Building](#building)
-- [Contributing](#contributing)
 - [Change Log](#change-log)
 
 # Installing
@@ -159,34 +157,6 @@ https://www.nordea.se/foretag/produkter/betala/programleverantorer/filkommunikat
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-# Building
-
-Clone a copy of the repository
-
-`git clone https://github.com/CommunityHiQ/Frends.Sweden.Nordea.git`
-
-Rebuild the project
-
-`dotnet build`
-
-Run tests
-
-`dotnet test`
-
-Create a NuGet package
-
-`dotnet pack --configuration Release`
-
-# Contributing
-When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
-
-1. Fork the repository on GitHub
-2. Clone the project to your own machine
-3. Commit changes to your own branch
-4. Push your work back up to your fork
-5. Submit a Pull request so that we can review your changes
-
-NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 # Change Log
 
