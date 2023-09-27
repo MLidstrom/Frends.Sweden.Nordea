@@ -141,6 +141,12 @@ namespace Frends.Sweden.Nordea
                 cancellationToken.ThrowIfCancellationRequested();
                 string lineHex = "";
 
+                // Skip if line is empty
+                if (string.IsNullOrEmpty(line)) 
+                {
+                    continue;
+                }
+
                 foreach (char c in line)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
