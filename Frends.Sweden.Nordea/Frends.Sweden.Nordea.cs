@@ -266,7 +266,7 @@ namespace Frends.Sweden.Nordea
             } while (bytesRead > 0);
 
             // Write File Trailer to outStream
-            fileTrail = "\r\n" + fileTrail;
+            //fileTrail = "\r\n" + fileTrail;
             outStream.Write(Encoding.GetEncoding(encoding).GetBytes(fileTrail), 0, fileTrail.Length);
 
             // Write Transmission Trailer to outStream
