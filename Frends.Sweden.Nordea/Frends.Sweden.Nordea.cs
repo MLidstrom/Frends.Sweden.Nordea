@@ -258,15 +258,36 @@ namespace Frends.Sweden.Nordea
             // Write inStream to outStream
             int bytesRead;
             byte[] buffer = new byte[1024];
+            bool lastBytesWereCRandLF = false;
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 bytesRead = inStream.Read(buffer, 0, 1024);
-                outStream.Write(buffer, 0, bytesRead);
+
+                //outStream.Write(buffer, 0, bytesRead);
+                if (lastBytesWereCRandLF)
+                {
+                    // Write the CR/LF from the last iteration first
+                    outStream.Write(buffer, 0, 2);
+                    // Adjust the buffer and bytesRead
+                    bytesRead -= 2;
+                    Array.Copy(buffer, 2, buffer, 0, bytesRead);
+                }
+
+                if (bytesRead > 2 && buffer[bytesRead - 2] == 0x0D && buffer[bytesRead - 1] == 0x0A) // CR/LF
+                {
+                    lastBytesWereCRandLF = true;
+                    outStream.Write(buffer, 0, bytesRead - 2); // Excluding the CR/LF
+                }
+                else
+                {
+                    lastBytesWereCRandLF = false;
+                    outStream.Write(buffer, 0, bytesRead);
+                }
             } while (bytesRead > 0);
 
             // Write File Trailer to outStream
-            //fileTrail = "\r\n" + fileTrail;
+            fileTrail = "\r\n" + fileTrail;
             outStream.Write(Encoding.GetEncoding(encoding).GetBytes(fileTrail), 0, fileTrail.Length);
 
             // Write Transmission Trailer to outStream
