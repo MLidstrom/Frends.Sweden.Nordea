@@ -270,7 +270,7 @@ namespace Frends.Sweden.Nordea
                     // Write the CR/LF from the last iteration first
                     outStream.Write(buffer, 0, 2);
                     // Adjust the buffer and bytesRead
-                    bytesRead -= 2;
+                    bytesRead = Math.Max(0, bytesRead - 2);;
                     Array.Copy(buffer, 2, buffer, 0, bytesRead);
                 }
 
