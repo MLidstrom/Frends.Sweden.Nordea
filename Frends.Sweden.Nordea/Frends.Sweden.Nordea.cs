@@ -258,37 +258,40 @@ namespace Frends.Sweden.Nordea
             // Write inStream to outStream
             int bytesRead;
             byte[] buffer = new byte[1024];
+            List<byte> lastBuffer = new List<byte>();
+
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 bytesRead = inStream.Read(buffer, 0, 1024);
-                outStream.Write(buffer, 0, bytesRead);
+
+                if (bytesRead > 0)
+                {
+                    // If lastBuffer has data, write it to outStream and clear it
+                    if (lastBuffer.Count > 0)
+                    {
+                        outStream.Write(lastBuffer.ToArray(), 0, lastBuffer.Count);
+                        lastBuffer.Clear();
+                    }
+
+                    // Append the read bytes to the lastBuffer
+                    lastBuffer.AddRange(buffer.Take(bytesRead));
+                }
+
             } while (bytesRead > 0);
 
-            // Remove trailing CR/LF pairs from outStream
-            bool crlfFound;
-            do
+            // Now, handle the very last buffer
+            // Check and remove CR/LF pairs at the end of the lastBuffer
+            while (lastBuffer.Count >= 2 &&
+                lastBuffer[lastBuffer.Count - 2] == 0x0D &&
+                lastBuffer[lastBuffer.Count - 1] == 0x0A)
             {
-                crlfFound = false;
+                lastBuffer.RemoveAt(lastBuffer.Count - 1);
+                lastBuffer.RemoveAt(lastBuffer.Count - 1);
+            }
 
-                if (outStream.Length >= 2)
-                {
-                    // Seek to the last two bytes
-                    outStream.Seek(-2, SeekOrigin.End);
-
-                    byte[] lastTwoBytes = new byte[2];
-                    outStream.Read(lastTwoBytes, 0, 2);
-
-                    // Check if the last two bytes are CR/LF
-                    if (lastTwoBytes[0] == 0x0D && lastTwoBytes[1] == 0x0A)
-                    {
-                        crlfFound = true;
-                        
-                        // Truncate the stream to remove the last two bytes
-                        outStream.SetLength(outStream.Length - 2);
-                    }
-                }
-            } while (crlfFound);
+            // Write the last buffer content to outStream
+            outStream.Write(lastBuffer.ToArray(), 0, lastBuffer.Count);
 
             // Write File Trailer to outStream
             fileTrail = "\r\n" + fileTrail;
