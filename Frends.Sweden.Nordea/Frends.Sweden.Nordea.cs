@@ -196,7 +196,7 @@ namespace Frends.Sweden.Nordea
             FileHeader fh = new FileHeader
             {
                 _020Pos1To4 = "%020",
-                DestinationNodePos5To14 = ValidateCharLengthAndPad(sourceNode_Pos_15_To_24, "Source node pos 15 to 24", 10),
+                DestinationNodePos5To14 = ValidateCharLengthAndPad(destinationNode_Pos_5_To_14, "Destination node pos 5 to 14", 10),
                 SourceNodePos15To24 = ValidateCharLengthAndPad(sourceNode_Pos_15_To_24, "Source node pos 15 to 24", 10),
                 ExternalReference1Pos25To31 = ValidateCharLengthAndPad(externalReference_1_Pos_25_To_31, "External reference 1 pos 25 to 31", 7),
                 NumberOfItemsPos32To38 = ValidateCharLengthAndPad(numberOfItems_Pos_32_To_38, "Number of items pos 32 to 38", 7),
